@@ -1,0 +1,11 @@
+<resources>
+    <string name="terms_of_use_link" translatable="false">http://www.p4rc.com/termsofuse.html</string>
+
+    <string name="html_page_url_prod" translatable="false">http://www.p4rc.com/mIndex.html</string>
+    <string name="html_page_url_test" translatable="false">http://test.p4rc.com:8080/mIndex.html</string>
+
+    <string name="production_base_url">http://www.p4rc.com/services/</string>
+    <string name="test_base_url">http://test.p4rc.com:8080/services/</string>
+
+    <string name="app_id">1038496302854802</string>
+</resources>
