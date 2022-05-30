@@ -31,6 +31,15 @@
             android:text="@string/button_finish_level"
             android:textStyle="bold" />
 
+
+        <Button
+            android:id="@+id/btn_user_login_level"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:onClick="onClick"
+            android:text="@string/button_user_login_auth"
+            android:textStyle="bold" />
+
         <Button
             android:id="@+id/btn_restart_game"
             android:layout_width="fill_parent"

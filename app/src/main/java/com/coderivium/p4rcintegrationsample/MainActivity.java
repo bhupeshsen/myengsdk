@@ -31,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
     private int finishStep;
     private AlertDialog dialog;
 
-    private Button p4rcwd;
+    private Button p4rcwd,userauthentication;
 
     private CallbackManager mCallbackManager;
 
@@ -42,6 +42,7 @@ public class MainActivity extends AppCompatActivity {
         P4RC.getInstance().setContext(this);
 
         p4rcwd = findViewById(R.id.btn_p4rc_button_without_dialog);
+        userauthentication = findViewById(R.id.btn_user_login_level);
 
         mCallbackManager = CallbackManager.Factory.create();
         LoginButton loginButton = findViewById(R.id.fb_login_button);
@@ -84,6 +85,8 @@ public class MainActivity extends AppCompatActivity {
             P4RC.getInstance().showMainP4RCPage();
         } else if (v.getId() == R.id.btn_current_state) {
             P4RC.getInstance().showDescriptiveAlertView();
+        }else if (v.getId() == R.id.btn_user_login_level) {
+            P4RC.getInstance().userLogin("bhupeshsen11@gmail.com","Bhs11!@#",null);
         } else if (v.getId() == R.id.btn_logout) {
             P4RC.getInstance().logout();
         }

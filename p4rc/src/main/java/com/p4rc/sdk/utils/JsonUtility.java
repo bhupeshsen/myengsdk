@@ -92,7 +92,7 @@ public class JsonUtility {
 			innerParams.put(AUTH_TYPE_PARAM, AUTH_TYPE_REGULAR);
 			innerParams.put(PASSWORD_PARAM, password);
 			innerParams.put(EMAIL_PARAM, email);
-			parameters.put(PAYLOAD_PARAM, innerParams);
+			parameters.put(PAYLOAD_FB_PARAM, innerParams);
 		} catch (JSONException e) {
 			lastErorCode = CONSTRUCTING_PARAMS_ERROR;
 		}

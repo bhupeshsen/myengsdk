@@ -16,6 +16,7 @@ import com.p4rc.sdk.task.CheckinPointsTask;
 import com.p4rc.sdk.task.ConvertPointsTask;
 import com.p4rc.sdk.task.CustomAsyncTask;
 import com.p4rc.sdk.task.CustomAsyncTask.AsyncTaskListener;
+import com.p4rc.sdk.task.LoginTask;
 import com.p4rc.sdk.task.MaxPointsTask;
 import com.p4rc.sdk.task.PlayerPingTask;
 import com.p4rc.sdk.task.PointsGameTask;
@@ -342,6 +343,35 @@ public class P4RC {
             playerPingTask.execute(isLoggedIn());
         }
     }
+
+
+
+
+    public  void userLogin(String email,String password,final OnLoginWithFacebookCompleted callback){
+        LoginTask userLoginTask = new LoginTask(context);
+        userLoginTask.setAsyncTaskListener(new AsyncTaskListener() {
+
+            @Override
+            public void onBeforeTaskStarted(CustomAsyncTask<?, ?, ?> task) {
+            }
+
+            @Override
+            public void onTaskFinished(CustomAsyncTask<?, ?, ?> task) {
+                if ((Boolean) task.getResult()) {
+                    if (callback != null) {
+                        callback.onCompleted(null);
+                    }
+                } else {
+                    if (callback != null) {
+                        callback.onCompleted("Failed");
+                    }
+                }
+            }
+        });
+        userLoginTask.execute(email,password);
+
+    }
+
 
     public void loginWithFacebook(String facebookToken, final OnLoginWithFacebookCompleted callback) {
         SignInWithFacebookTask signInWithFacebookTask = new SignInWithFacebookTask(context);
