@@ -70,7 +70,7 @@ public class ConnectionProtocol extends ConnectionClient {
     public HashMap<String, Object> requestLogin(String password, String email) {
         String url = completeURL(BASE_URL, LOGIN_REQUEST_METHOD);
         String json = jsonUtility.getSignInRequestParams(password, email);
-        return jsonUtility.encodeLoginResponse(super.makeRequestToServer(url, POST_METHOD, json));
+        return jsonUtility.encodeLoginResponse(super.makeRequestToServer("https://myxr-api-qa.kiwi-internal.com/api/v1/users/authenticate", POST_METHOD, json));
     }
 
     public HashMap<String, Object> requestSignUp(String deviceType, String firstName, String lastName,

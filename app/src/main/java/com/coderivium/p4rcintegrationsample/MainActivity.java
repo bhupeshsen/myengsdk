@@ -81,7 +81,7 @@ public class MainActivity extends AppCompatActivity {
 
         final EditText input2 = new EditText(this);
         input2.setHint("Enter Password");
-        input2.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+        input2.setInputType(InputType.TYPE_CLASS_TEXT /*| InputType.TYPE_TEXT_VARIATION_PASSWORD*/);
 
         final LinearLayout ll = new LinearLayout(this);
         ll.setOrientation(LinearLayout.VERTICAL);
@@ -111,7 +111,10 @@ public class MainActivity extends AppCompatActivity {
                     P4RC.getInstance().userLogin(email, password, new OnLoginWithEmailCallback() {
                         @Override
                         public void onCompleted(String error) {
-//                       todo done
+                            if (error != null)
+                                Toast.makeText(MainActivity.this, error, Toast.LENGTH_SHORT).show();
+                            else
+                                dialog.dismiss();
                         }
 
                         @Override

@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.text.TextUtils;
+import android.util.Log;
 
 import com.p4rc.sdk.activity.MainActivity;
 import com.p4rc.sdk.model.GamePoint;
@@ -360,6 +361,7 @@ public class P4RC {
             callback.onValidationError(emailError,passwordError);
             return;
         }
+        Log.d("TAG", "userLogin: " + email + " - " + password);
         LoginTask userLoginTask = new LoginTask(context);
         userLoginTask.setAsyncTaskListener(new AsyncTaskListener() {
 
@@ -369,6 +371,7 @@ public class P4RC {
 
             @Override
             public void onTaskFinished(CustomAsyncTask<?, ?, ?> task) {
+                Log.d("TAG", "onTaskFinished: ");
                 if ((Boolean) task.getResult()) {
                     if (callback != null) {
                         callback.onCompleted(null);
@@ -381,7 +384,6 @@ public class P4RC {
             }
         });
         userLoginTask.execute(email,password);
-
     }
 
 
