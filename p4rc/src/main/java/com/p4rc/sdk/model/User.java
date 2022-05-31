@@ -176,4 +176,25 @@ public class User {
 		return user;
 	}
 
+	@Override
+	public String toString() {
+		return "User{" +
+				"offerCountry='" + offerCountry + '\'' +
+				", email='" + email + '\'' +
+				", totalPoints=" + totalPoints +
+				", userType=" + userType +
+				", image='" + image + '\'' +
+				", totalLifeTimePoints=" + totalLifeTimePoints +
+				", userSource=" + userSource +
+				", firstName='" + firstName + '\'' +
+				", lastName='" + lastName + '\'' +
+				", userAcceptedTerms=" + userAcceptedTerms +
+				", userAvatarURL='" + userAvatarURL + '\'' +
+				", facebookId=" + facebookId +
+				", profileCompletionPercent=" + profileCompletionPercent +
+				", fbPublishAllowed=" + fbPublishAllowed +
+				", admin=" + admin +
+				", id=" + id +
+				'}';
+	}
 }

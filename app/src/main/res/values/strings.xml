@@ -3,16 +3,16 @@
     <string name="app_name">"P4RC Integration"</string>
     <string name="menu_settings">Settings</string>
     <string name="crash_toast_text">The application has crashed, but a report has been sent to the developers to help fix the issue! Please restart the application.</string>
-    
+
     <string name="alert_dialog_finished">"Level is finished!"</string>
-    
+
     <string name="dialog_enter_level">"Please, enter level"</string>
     <string name="dialog_enter_point">"Please, enter points"</string>
     <string name="dialog_button_ok">OK</string>
     <string name="dialog_button_cancel">Cancel</string>
-    
+
     <string name="toast_press_start_level">Please, press \"Start level\" first.</string>
-    
+
     <string name="text_view_splash">Splash</string>
     <string name="button_splash">Show splash screen</string>
     <string name="text_view_send_event">Send event</string>
@@ -25,5 +25,5 @@
     <string name="text_view_for_testing">For testing</string>
     <string name="button_show_current_state">Show current state</string>
     <string name="button_logout">Logout</string>
-    
+
 </resources>

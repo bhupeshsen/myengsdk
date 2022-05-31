@@ -11,6 +11,7 @@ import android.util.Log;
 import com.p4rc.sdk.activity.MainActivity;
 import com.p4rc.sdk.model.GamePoint;
 import com.p4rc.sdk.model.Point;
+import com.p4rc.sdk.model.User;
 import com.p4rc.sdk.net.NetworkErrors;
 import com.p4rc.sdk.task.BatchCheckinPointsTask;
 import com.p4rc.sdk.task.CheckinPointsTask;
@@ -348,7 +349,7 @@ public class P4RC {
 
 
 
-    public  void userLogin(String email,String password,final OnLoginWithEmailCallback callback){
+    public void userLogin(String email,String password,final OnLoginWithEmailCallback callback){
         String emailError = null;
         String passwordError = null;
         if(email==null || email.length()==0){
@@ -362,7 +363,8 @@ public class P4RC {
             return;
         }
         Log.d("TAG", "userLogin: " + email + " - " + password);
-        LoginTask userLoginTask = new LoginTask(context);
+
+        LoginTask userLoginTask = new LoginTask(context, true);
         userLoginTask.setAsyncTaskListener(new AsyncTaskListener() {
 
             @Override
@@ -513,6 +515,10 @@ public class P4RC {
             }
         });
         maxPointTask.execute();
+    }
+
+    public User getUser() {
+        return appConfig.getUser();
     }
 
     private class ServerConvertionListener implements CustomAsyncTask.AsyncTaskListener {

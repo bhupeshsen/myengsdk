@@ -155,7 +155,9 @@ public class MainActivity extends AppCompatActivity {
         } else if (v.getId() == R.id.btn_current_state) {
             P4RC.getInstance().showDescriptiveAlertView();
         }else if (v.getId() == R.id.btn_user_login_level) {
-            showAuthDialog();
+            Intent intent = new Intent(this, LoginActivity.class);
+            startActivity(intent);
+//            showAuthDialog();
         } else if (v.getId() == R.id.btn_logout) {
             P4RC.getInstance().logout();
         }
