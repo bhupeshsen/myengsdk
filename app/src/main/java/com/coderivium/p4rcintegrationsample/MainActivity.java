@@ -77,9 +77,11 @@ public class MainActivity extends AppCompatActivity {
 
         final EditText input = new EditText(this);
         input.setHint("Enter Email");
+        input.setText("bhupesh.sen@kiwitech.com");
         input.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
 
         final EditText input2 = new EditText(this);
+        input2.setText("Bhupesh11@");
         input2.setHint("Enter Password");
         input2.setInputType(InputType.TYPE_CLASS_TEXT /*| InputType.TYPE_TEXT_VARIATION_PASSWORD*/);
 
@@ -185,7 +187,7 @@ public class MainActivity extends AppCompatActivity {
         Button okBtn = new Button(MainActivity.this);
         okBtn.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout
                 .LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT));
-        okBtn.setId(300);
+        okBtn.setId(View.generateViewId());
         okBtn.setText(getResources().getString(R.string.dialog_button_ok));
         okBtn.setOnClickListener(new View.OnClickListener() {
 

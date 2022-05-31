@@ -18,8 +18,8 @@ android {
         }
         qa {
             dimension "environment"
-            buildConfigField "String", "SERVER_URL", '"http://52.200.207.200:8080"'
-            buildConfigField "String", "FRONTEND_URL", '"http://52.200.207.200"'
+            buildConfigField "String", "SERVER_URL", '"https://myxr-api-qa.kiwi-internal.com"'
+            buildConfigField "String", "FRONTEND_URL", '"https://myxr-api-qa.kiwi-internal.com"'
         }
         stage {
             dimension "environment"

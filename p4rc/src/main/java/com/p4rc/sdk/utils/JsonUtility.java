@@ -4,8 +4,10 @@ import android.util.Log;
 
 import com.p4rc.sdk.AppConfig;
 import com.p4rc.sdk.P4RC;
+import com.p4rc.sdk.model.AuthSession;
 import com.p4rc.sdk.model.GamePoint;
 import com.p4rc.sdk.model.Point;
+import com.p4rc.sdk.net.Response;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -274,45 +276,24 @@ public class JsonUtility {
 		return params.toString();
 	}
 	
-	public HashMap<String, Object> encodeLoginResponse(String responseString) {
-		HashMap<String, Object> data = new HashMap<String, Object>();
+	public Response<AuthSession> encodeLoginResponse(String responseString) {
 		if (responseString == null){
-			return data;
+			return new Response<>(lastErorCode, "No response from server", null);
 		}
-		JSONObject response = null;
 		try {
-			response = new JSONObject(responseString);
-			if(response != null) {
-				String status = response.optString(STATUS_PARAM);
-				JSONObject payload = response.optJSONObject(PAYLOAD_PARAM);
-				JSONObject userData = payload.optJSONObject(USER_PARAM);
-				data.put(STATUS_PARAM, status);
-				if (status.equals(SUCCESS_STATUS)) {
-					data.put(EMAIL_PARAM, userData.optString(EMAIL_PARAM));
-					data.put(FIRST_NAME_PARAM, userData.optString(FIRST_NAME_PARAM));
-					data.put(LAST_NAME_PARAM, userData.optString(LAST_NAME_PARAM));
-					data.put(USER_SOURCE_PARAM, userData.optInt(USER_SOURCE_PARAM));
-					data.put(USER_TYPE_PARAM, userData.optInt(USER_TYPE_PARAM));
-					data.put(USER_ACCEPTED_TERMS, userData.optBoolean(USER_ACCEPTED_TERMS));
-					data.put(PROFILE_COMPLETION_PERCENT_PARAM, 
-							userData.optDouble(PROFILE_COMPLETION_PERCENT_PARAM));
-					data.put(USER_AVATAR_URL_PARAM, userData.optString(USER_AVATAR_URL_PARAM));
-					data.put(TOTAL_POINTS_PARAM, userData.optInt(TOTAL_POINTS_PARAM));
-					data.put(FACEBOOK_ID_PARAM, userData.optString(FACEBOOK_ID_PARAM));
-					data.put(FB_PUBLISH_ALLOWED_PARAM, 
-							userData.optBoolean(FB_PUBLISH_ALLOWED_PARAM));
-					data.put(ID_PARAM, userData.optLong(ID_PARAM));
-					data.put(SESSION_TOKEN_PARAM, payload.optString(SESSION_TOKEN_PARAM));
-					data.put(AUTH_STATUS_PARAM, payload.optInt(AUTH_STATUS_PARAM));
-				} else if (status.equals(SUCCESS_ERROR)) {
-					data.put(MESSAGE_PARAM, payload.optString(MESSAGE_PARAM));
-					data.put(CODE_PARAM, payload.optInt(CODE_PARAM));
-				}
+			JSONObject response = new JSONObject(responseString);
+
+			String status = response.getString(STATUS_PARAM);
+			JSONObject payload = response.getJSONObject(PAYLOAD_PARAM);
+			if (status.equals(SUCCESS_STATUS)) {
+				return new Response<>(200, "Success", AuthSession.fromJSON(payload));
+			} else {
+				return new Response<>(payload.optInt(CODE_PARAM), payload.optString(MESSAGE_PARAM), null);
 			}
 		} catch (JSONException e) {
 			lastErorCode = GETTING_PARAMS_ERROR;
+			return new Response<>(888, "Response Not In Json", null);
 		}
-		return data;
 	}
 	
 	public HashMap<String, Object> encodeSignUpResponse(String responseString) {

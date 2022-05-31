@@ -11,7 +11,7 @@ import com.p4rc.sdk.utils.JsonUtility;
 import java.util.Arrays;
 import java.util.List;
 
-public class AppConfig {
+public class AppConfig extends AppPreference {
 
 	public static final String PRODUCTION_SERVER_HOST = BuildConfig.SERVER_URL;
 	public static final String TEST_RESOURCES_SERVER = "http://test.p4rc.com:8080/resources/wl/index.html";
@@ -43,7 +43,7 @@ public class AppConfig {
 	
 	private static AppConfig instance  = null;
 	
-	private Context context;
+
 	
 	private String apiBaseUrl;
 	
@@ -62,13 +62,7 @@ public class AppConfig {
 		  return instance;
 	}
 	
-	public Context getContext() {
-		return context;
-	}
 
-	public void setContext(Context context) {
-		this.context = context;
-	}
 	
     public String getHtmlPageUrl() {
     	return htmlPageUrl;
