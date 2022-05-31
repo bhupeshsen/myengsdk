@@ -8,6 +8,7 @@
     <string name="p4rc_login_mail_hint">e-mail</string>
     <string name="p4rc_login_passw_hint">Password</string>
 	<string name="p4rc_login_sign_button_text">Sign In</string>
+	<string name="button_user_login_auth">Authentication</string>
 	<string name="p4rc_login_dont_have_acc">Don\'t have a P4RC Account?</string>
 	<string name="p4rc_login_sign_up_easy_label">Signing up is easy.</string>
 	<string name="p4rc_login_sign_up_link">Sign Up.</string>

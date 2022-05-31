@@ -2,6 +2,7 @@ package com.coderivium.p4rcintegrationsample;
 
 import android.content.ClipData;
 import android.content.ClipboardManager;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.InputType;
@@ -9,6 +10,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -21,6 +23,7 @@ import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
+import com.p4rc.sdk.OnLoginWithEmailCallback;
 import com.p4rc.sdk.P4RC;
 import com.p4rc.sdk.utils.AppUtils;
 
@@ -67,6 +70,67 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    private void showAuthDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Authentication");
+        builder.setMessage("Please enter your email and password");
+
+        final EditText input = new EditText(this);
+        input.setHint("Enter Email");
+        input.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
+
+        final EditText input2 = new EditText(this);
+        input2.setHint("Enter Password");
+        input2.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+
+        final LinearLayout ll = new LinearLayout(this);
+        ll.setOrientation(LinearLayout.VERTICAL);
+        int dp50 = Utils.dpToPx(20);
+        ll.setPadding(dp50, dp50, dp50, dp50);
+        ll.addView(input);
+        ll.addView(input2);
+
+
+        builder.setView(ll);
+        builder.setCancelable(false);
+        builder.setPositiveButton("Login", null);
+        builder.setNegativeButton("CANCEL", (dialog, which) -> {
+            dialog.cancel();
+        });
+
+        final AlertDialog dialog = builder.create();
+
+        dialog.setOnShowListener(new DialogInterface.OnShowListener() {
+            @Override
+            public void onShow(DialogInterface dialogInterface) {
+                Button button = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
+                button.setOnClickListener(view -> {
+                    String email = input.getText().toString();
+                    String password = input2.getText().toString();
+//            P4RC.getInstance().userLogin("bhupeshsen11@gmail.com","Bhs11!@#",null);
+                    P4RC.getInstance().userLogin(email, password, new OnLoginWithEmailCallback() {
+                        @Override
+                        public void onCompleted(String error) {
+//                       todo done
+                        }
+
+                        @Override
+                        public void onValidationError(String emailError, String passwordError) {
+                            if (emailError != null && passwordError != null)
+                                Toast.makeText(MainActivity.this, emailError + ", " + passwordError, Toast.LENGTH_SHORT).show();
+                            else if (emailError != null)
+                                Toast.makeText(MainActivity.this, emailError, Toast.LENGTH_SHORT).show();
+                            else if (passwordError != null)
+                                Toast.makeText(MainActivity.this, passwordError, Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                });
+            }
+        });
+
+        dialog.show();
+    }
+
     public void onClick(View v) {
         if (v.getId() == R.id.btn_start_level) {
             P4RC.getInstance().didStartLevel();
@@ -86,7 +150,7 @@ public class MainActivity extends AppCompatActivity {
         } else if (v.getId() == R.id.btn_current_state) {
             P4RC.getInstance().showDescriptiveAlertView();
         }else if (v.getId() == R.id.btn_user_login_level) {
-            P4RC.getInstance().userLogin("bhupeshsen11@gmail.com","Bhs11!@#",null);
+            showAuthDialog();
         } else if (v.getId() == R.id.btn_logout) {
             P4RC.getInstance().logout();
         }
@@ -99,9 +163,9 @@ public class MainActivity extends AppCompatActivity {
         RelativeLayout wrapper = new RelativeLayout(MainActivity.this);
         final TextView text = new TextView(MainActivity.this);
         text.setText(getResources().getString(R.string.dialog_enter_level));
-        text.setId(100);
+        text.setId(View.generateViewId());
         final EditText input = new EditText(MainActivity.this);
-        input.setId(200);
+        input.setId(View.generateViewId());
         input.setInputType(InputType.TYPE_CLASS_NUMBER);
 
         RelativeLayout.LayoutParams textParams = new RelativeLayout.LayoutParams(RelativeLayout.

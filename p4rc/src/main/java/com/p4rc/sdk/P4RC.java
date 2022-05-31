@@ -347,7 +347,19 @@ public class P4RC {
 
 
 
-    public  void userLogin(String email,String password,final OnLoginWithFacebookCompleted callback){
+    public  void userLogin(String email,String password,final OnLoginWithEmailCallback callback){
+        String emailError = null;
+        String passwordError = null;
+        if(email==null || email.length()==0){
+            emailError = "Email is required";
+        }
+        if(password==null || password.length()==0){
+            passwordError = "Password is required";
+        }
+        if(emailError!=null || passwordError!=null){
+            callback.onValidationError(emailError,passwordError);
+            return;
+        }
         LoginTask userLoginTask = new LoginTask(context);
         userLoginTask.setAsyncTaskListener(new AsyncTaskListener() {
 
