@@ -155,7 +155,7 @@ public class MainActivity extends AppCompatActivity {
         } else if (v.getId() == R.id.btn_current_state) {
             P4RC.getInstance().showDescriptiveAlertView();
         }else if (v.getId() == R.id.btn_user_login_level) {
-            Intent intent = new Intent(this, LoginActivity.class);
+            Intent intent = new Intent(this, P4RC.getInstance().isLoggedIn() ? DashboardActivity.class:LoginActivity.class);
             startActivity(intent);
 //            showAuthDialog();
         } else if (v.getId() == R.id.btn_logout) {
@@ -225,7 +225,7 @@ public class MainActivity extends AppCompatActivity {
         cancelBtn.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout
                 .LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT));
         cancelBtn.setText(getResources().getString(R.string.dialog_button_cancel));
-        cancelBtn.setId(400);
+        cancelBtn.setId(View.generateViewId());
         cancelBtn.setOnClickListener(new View.OnClickListener() {
 
             @Override

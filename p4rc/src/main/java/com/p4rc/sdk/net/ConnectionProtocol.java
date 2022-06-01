@@ -3,6 +3,7 @@ package com.p4rc.sdk.net;
 import com.p4rc.sdk.AppConfig;
 import com.p4rc.sdk.P4RC;
 import com.p4rc.sdk.model.AuthSession;
+import com.p4rc.sdk.model.gamelist.GameList;
 import com.p4rc.sdk.utils.JsonUtility;
 
 import java.util.HashMap;
@@ -10,11 +11,13 @@ import java.util.Map;
 
 public class ConnectionProtocol extends ConnectionClient {
 
+    private static final String GAME_LIST_REQUEST_METHOD = "v1/games?deviceName=null";
     /**
      * parameters for every request to the server
      */
     private String BASE_URL = "";
     private static final String SIGN_UP_REQUEST_METHOD = "v1/user/registerNewUser";
+    private static final String SIGN_UP_NEW_REQUEST_METHOD = "v1/users/registerNewUserNLogin";
     private static final String LOGIN_REQUEST_METHOD = "v1/users/authenticate";
     private static final String PASSWORD_RESET_REQUEST_METHOD = "v1/user/forgotPassword";
     private static final String PALYER_PING_REQUEST_METHOD = "v1/user/playerPing";
@@ -80,6 +83,21 @@ public class ConnectionProtocol extends ConnectionClient {
         String json = jsonUtility.getSignUpParams(deviceType, firstName, lastName,
                 isUserAcceptedTerms, password, email, gameRefId);
         return jsonUtility.encodeSignUpResponse(super.makeRequestToServer(url, PUT_METHOD, json));
+    }
+
+    public HashMap<String, Object> requestSignUpNew(
+            String firstName, String lastName,String email, String password, String deviceType,  String dob) {
+        String url = completeURL(BASE_URL, SIGN_UP_NEW_REQUEST_METHOD);
+        String json = jsonUtility.getSignUpNewParams(firstName, lastName, email, password, deviceType, dob);
+        return jsonUtility.encodeSignUpResponse(super.makeRequestToServer(url, PUT_METHOD, json));
+    }
+
+    public Response<GameList> requestGameList() {
+        String url = completeURL(BASE_URL, GAME_LIST_REQUEST_METHOD);
+//        fixme myxr-api-key is manually added
+        Map<String,String> json = new HashMap<>();
+        json.put("X-MYXR-ApiKey", "f3ba3335-c475-4c93-870d-cc33e423dd31");
+        return jsonUtility.encodeGameListResponse(super.makeRequestToServer(url, PUT_METHOD, null, json));
     }
 
     public HashMap<String, Object> requestPasswordReset(String email) {

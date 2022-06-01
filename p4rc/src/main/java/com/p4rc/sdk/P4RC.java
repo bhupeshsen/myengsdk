@@ -18,6 +18,7 @@ import com.p4rc.sdk.task.CheckinPointsTask;
 import com.p4rc.sdk.task.ConvertPointsTask;
 import com.p4rc.sdk.task.CustomAsyncTask;
 import com.p4rc.sdk.task.CustomAsyncTask.AsyncTaskListener;
+import com.p4rc.sdk.task.GameListTask;
 import com.p4rc.sdk.task.LoginTask;
 import com.p4rc.sdk.task.MaxPointsTask;
 import com.p4rc.sdk.task.PlayerPingTask;

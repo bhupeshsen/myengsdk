@@ -7,6 +7,8 @@ import com.p4rc.sdk.P4RC;
 import com.p4rc.sdk.model.AuthSession;
 import com.p4rc.sdk.model.GamePoint;
 import com.p4rc.sdk.model.Point;
+import com.p4rc.sdk.model.gamelist.Game;
+import com.p4rc.sdk.model.gamelist.GameList;
 import com.p4rc.sdk.net.Response;
 
 import org.json.JSONArray;
@@ -74,8 +76,9 @@ public class JsonUtility {
 	public static final int NO_ERROR = 0;
 	public static final int CONSTRUCTING_PARAMS_ERROR = 1;
 	public static final int GETTING_PARAMS_ERROR = 2;
-	
-	
+	private static final String DOB = "dob";
+
+
 	//constants for requests
 	private final String AUTH_TYPE_REGULAR = "REGULAR";
 	
@@ -120,6 +123,24 @@ public class JsonUtility {
 		}
 		return payload.toString();
 	}
+
+	public String getSignUpNewParams(String firstName, String lastName, String email, String password, String deviceType, String dob) {
+		JSONObject payload = new JSONObject();
+		JSONObject innerParams = new JSONObject();
+		try {
+			innerParams.put(FIRST_NAME_PARAM, firstName);
+			innerParams.put(LAST_NAME_PARAM, lastName);
+			innerParams.put(EMAIL_PARAM, email);
+			innerParams.put(PASSWORD_PARAM, password);
+			innerParams.put(DEVICE_TYPE_PARAM, deviceType);
+			innerParams.put(DOB, dob);
+			payload.put(PAYLOAD_PARAM, innerParams);
+		} catch (JSONException e) {
+			lastErorCode = CONSTRUCTING_PARAMS_ERROR;
+		}
+		return payload.toString();
+	}
+
 	public String getSignUpParamsWithFBAccessToken(String fbAccessToken) {
 		JSONObject payload = new JSONObject();
 		JSONObject innerParams = new JSONObject();
@@ -275,7 +296,27 @@ public class JsonUtility {
 		}
 		return params.toString();
 	}
-	
+//	created on 01/06/2022
+	public  Response<GameList> encodeGameListResponse(String responseString) {
+		if (responseString == null){
+			return new Response<>(lastErorCode, "No response from server", null);
+		}
+		try {
+			JSONObject response = new JSONObject(responseString);
+
+			String status = response.getString(STATUS_PARAM);
+			JSONObject payload = response.getJSONObject(PAYLOAD_PARAM);
+			if (status.equals(SUCCESS_STATUS)) {
+				return new Response<>(200, "Success", GameList.fromJSON(payload));
+			} else {
+				return new Response<>(payload.optInt(CODE_PARAM), payload.optString(MESSAGE_PARAM), null);
+			}
+		} catch (JSONException e) {
+			lastErorCode = GETTING_PARAMS_ERROR;
+			return new Response<>(888, "Response Not In Json", null);
+		}
+	}
+
 	public Response<AuthSession> encodeLoginResponse(String responseString) {
 		if (responseString == null){
 			return new Response<>(lastErorCode, "No response from server", null);
@@ -328,6 +369,8 @@ public class JsonUtility {
 		}
 		return data;
 	}
+
+
 	
 	public HashMap<String, Object> encodeSignInUserWithFBAccessTokenResponse(String responseString) {
 		HashMap<String, Object> data = new HashMap<String, Object>();

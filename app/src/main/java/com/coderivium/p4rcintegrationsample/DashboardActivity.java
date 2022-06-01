@@ -6,6 +6,9 @@ import android.os.Bundle;
 import android.widget.TextView;
 
 import com.p4rc.sdk.P4RC;
+import com.p4rc.sdk.model.gamelist.GameList;
+import com.p4rc.sdk.task.CustomAsyncTask;
+import com.p4rc.sdk.task.GameListTask;
 
 public class DashboardActivity extends AppCompatActivity {
 
@@ -18,7 +21,21 @@ public class DashboardActivity extends AppCompatActivity {
 
         userTextView = findViewById(R.id.userText);
 
-        userTextView.setText(P4RC.getInstance().getUser().toString());
+        GameListTask gameListTask = new GameListTask(this);
+        gameListTask.setAsyncTaskListener(new CustomAsyncTask.AsyncTaskListener() {
+            @Override
+            public void onBeforeTaskStarted(CustomAsyncTask<?, ?, ?> task) {
+
+            }
+
+            @Override
+            public void onTaskFinished(CustomAsyncTask<?, ?, ?> task) {
+                userTextView.setText(gameListTask.getData().getData().toString());
+            }
+        });
+        gameListTask.execute();
+
+//        userTextView.setText(P4RC.getInstance().getUser().toString());
 
     }
 }
