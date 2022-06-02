@@ -24,6 +24,7 @@ import com.p4rc.sdk.task.MaxPointsTask;
 import com.p4rc.sdk.task.PlayerPingTask;
 import com.p4rc.sdk.task.PointsGameTask;
 import com.p4rc.sdk.task.SignInWithFacebookTask;
+import com.p4rc.sdk.task.SignUpNewTask;
 import com.p4rc.sdk.utils.AppUtils;
 import com.p4rc.sdk.utils.Constants;
 import com.p4rc.sdk.utils.JsonUtility;
@@ -348,6 +349,35 @@ public class P4RC {
     }
 
 
+    public void userSignup(
+            String firstName, String lastName,String email, String password, String deviceType,  String dob, final OnLoginWithEmailCallback callback) {
+
+//        todo validation and new Callback with all Validation
+        SignUpNewTask signUpNewTask = new SignUpNewTask(context);
+        signUpNewTask.setShowProgress(false);
+        signUpNewTask.setAsyncTaskListener(new AsyncTaskListener() {
+
+            @Override
+            public void onBeforeTaskStarted(CustomAsyncTask<?, ?, ?> task) {
+
+            }
+
+            @Override
+            public void onTaskFinished(CustomAsyncTask<?, ?, ?> task) {
+                Log.d("TAG", "onTaskFinished: ");
+                if ((Boolean) task.getResult()) {
+                    if (callback != null) {
+                        callback.onCompleted(null);
+                    }
+                } else {
+                    if (callback != null) {
+                        callback.onCompleted("Failed");
+                    }
+                }
+            }
+        });
+        signUpNewTask.execute(firstName, lastName, email, password, deviceType, dob);
+    }
 
 
     public void userLogin(String email,String password,final OnLoginWithEmailCallback callback){

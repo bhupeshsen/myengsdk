@@ -85,11 +85,11 @@ public class ConnectionProtocol extends ConnectionClient {
         return jsonUtility.encodeSignUpResponse(super.makeRequestToServer(url, PUT_METHOD, json));
     }
 
-    public HashMap<String, Object> requestSignUpNew(
+    public Response<AuthSession> requestSignUpNew(
             String firstName, String lastName,String email, String password, String deviceType,  String dob) {
         String url = completeURL(BASE_URL, SIGN_UP_NEW_REQUEST_METHOD);
         String json = jsonUtility.getSignUpNewParams(firstName, lastName, email, password, deviceType, dob);
-        return jsonUtility.encodeSignUpResponse(super.makeRequestToServer(url, PUT_METHOD, json));
+        return jsonUtility.encodeLoginResponse(super.makeRequestToServer(url, PUT_METHOD, json));
     }
 
     public Response<GameList> requestGameList() {

@@ -2,49 +2,53 @@ package com.coderivium.p4rcintegrationsample;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.p4rc.sdk.OnLoginWithEmailCallback;
 import com.p4rc.sdk.P4RC;
 
 import java.util.Objects;
 
-public class LoginActivity extends AppCompatActivity {
+public class SignUpActivity extends AppCompatActivity {
 
-    private TextInputLayout emailTextInputLayout, passwordTextInputLayout;
+    private TextInputLayout firstNameTextInput, lastNameTextInput, emailTextInputLayout, passwordTextInputLayout, dobTextInput;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
+        setContentView(R.layout.activity_signup);
         P4RC.getInstance().setContext(this);
 
+        firstNameTextInput = findViewById(R.id.first_name_text_input_layout);
+        lastNameTextInput = findViewById(R.id.last_name_text_input_layout);
         emailTextInputLayout = findViewById(R.id.email_text_input_layout);
         passwordTextInputLayout = findViewById(R.id.password_text_input_layout);
-        Button loginButton = findViewById(R.id.login_button);
+        dobTextInput = findViewById(R.id.dob_text_input_layout);
+        Button signupButton = findViewById(R.id.signup_button);
         findViewById(R.id.login_redirect).setOnClickListener(view -> {
-            startActivity(new Intent(LoginActivity.this, SignUpActivity.class));
+            startActivity(new Intent(SignUpActivity.this, LoginActivity.class));
             finish();
         });
 
-        loginButton.setOnClickListener(v -> {
+        signupButton.setOnClickListener(v -> {
+            String firstName = Objects.requireNonNull(firstNameTextInput.getEditText()).getText().toString();
+            String lastName = Objects.requireNonNull(lastNameTextInput.getEditText()).getText().toString();
             String email = Objects.requireNonNull(emailTextInputLayout.getEditText()).getText().toString();
             String password = Objects.requireNonNull(passwordTextInputLayout.getEditText()).getText().toString();
+            String dob = Objects.requireNonNull(dobTextInput.getEditText()).getText().toString();
 
-            P4RC.getInstance().userLogin(email, password, new OnLoginWithEmailCallback() {
+            P4RC.getInstance().userSignup(firstName, lastName,email, password, "Android", dob, new OnLoginWithEmailCallback() {
                 @Override
                 public void onCompleted(String error) {
                     if (error != null) {
-                        Toast.makeText(LoginActivity.this, error, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(SignUpActivity.this, error, Toast.LENGTH_SHORT).show();
                     } else {
-                        Toast.makeText(LoginActivity.this, "Login Successful", Toast.LENGTH_SHORT).show();
-                        Intent intent = new Intent(LoginActivity.this, DashboardActivity.class);
+                        Toast.makeText(SignUpActivity.this, "Signup Successful", Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(SignUpActivity.this, DashboardActivity.class);
                         startActivity(intent);
                         finish();
                     }

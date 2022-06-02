@@ -318,6 +318,7 @@ public class JsonUtility {
 	}
 
 	public Response<AuthSession> encodeLoginResponse(String responseString) {
+		Log.d(TAG, "encodeLoginResponse: " + responseString);
 		if (responseString == null){
 			return new Response<>(lastErorCode, "No response from server", null);
 		}
