@@ -1,5 +1,6 @@
 package com.coderivium.p4rcintegrationsample;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
@@ -35,6 +36,8 @@ public class SignUpActivity extends AppCompatActivity {
         });
 
         signupButton.setOnClickListener(v -> {
+            ProgressDialog progressDialog = Utils.buildLoading(this);
+            progressDialog.show();
             String firstName = Objects.requireNonNull(firstNameTextInput.getEditText()).getText().toString();
             String lastName = Objects.requireNonNull(lastNameTextInput.getEditText()).getText().toString();
             String email = Objects.requireNonNull(emailTextInputLayout.getEditText()).getText().toString();
@@ -44,6 +47,7 @@ public class SignUpActivity extends AppCompatActivity {
             P4RC.getInstance().userSignup(firstName, lastName,email, password, "Android", dob, new OnLoginWithEmailCallback() {
                 @Override
                 public void onCompleted(String error) {
+                    progressDialog.dismiss();
                     if (error != null) {
                         Toast.makeText(SignUpActivity.this, error, Toast.LENGTH_SHORT).show();
                     } else {
@@ -56,6 +60,7 @@ public class SignUpActivity extends AppCompatActivity {
 
                 @Override
                 public void onValidationError(String emailError, String passwordError) {
+                    progressDialog.dismiss();
                     if (emailError != null) {
                         emailTextInputLayout.setError(emailError);
                     }

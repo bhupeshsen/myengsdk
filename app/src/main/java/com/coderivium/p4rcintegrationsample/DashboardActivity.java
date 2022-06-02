@@ -1,12 +1,13 @@
 package com.coderivium.p4rcintegrationsample;
 
+import android.os.Bundle;
+import android.util.Log;
+import android.widget.TextView;
+import android.widget.Toast;
+
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.os.Bundle;
-import android.widget.TextView;
-
 import com.p4rc.sdk.P4RC;
-import com.p4rc.sdk.model.gamelist.GameList;
 import com.p4rc.sdk.task.CustomAsyncTask;
 import com.p4rc.sdk.task.GameListTask;
 
@@ -30,7 +31,13 @@ public class DashboardActivity extends AppCompatActivity {
 
             @Override
             public void onTaskFinished(CustomAsyncTask<?, ?, ?> task) {
-                userTextView.setText(gameListTask.getData().getData().toString());
+                Toast.makeText(DashboardActivity.this, "DONE " + task, Toast.LENGTH_SHORT).show();
+                if (gameListTask.getData() != null) {
+                    Log.d("TAG", "onTaskFinished: " + task.getResult());;
+                    Log.d("TAG", "onTaskFinished: HEre");
+                    if (gameListTask.getData().getData() != null)
+                        userTextView.setText(gameListTask.getData().getData().toString());
+                }
             }
         });
         gameListTask.execute();

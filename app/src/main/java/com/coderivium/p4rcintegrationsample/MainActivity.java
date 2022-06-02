@@ -154,10 +154,12 @@ public class MainActivity extends AppCompatActivity {
             P4RC.getInstance().showMainP4RCPage();
         } else if (v.getId() == R.id.btn_current_state) {
             P4RC.getInstance().showDescriptiveAlertView();
-        }else if (v.getId() == R.id.btn_user_login_level) {
-            Intent intent = new Intent(this, P4RC.getInstance().isLoggedIn() ? DashboardActivity.class:LoginActivity.class);
+        } else if (v.getId() == R.id.btn_user_dashboard) {
+            Intent intent = new Intent(this, DashboardActivity.class);
             startActivity(intent);
-//            showAuthDialog();
+        } else if (v.getId() == R.id.btn_user_login_level) {
+            Intent intent = new Intent(this, P4RC.getInstance().isLoggedIn() ? DashboardActivity.class : LoginActivity.class);
+            startActivity(intent);
         } else if (v.getId() == R.id.btn_logout) {
             P4RC.getInstance().logout();
         }

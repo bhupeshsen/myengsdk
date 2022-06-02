@@ -8,7 +8,7 @@ import com.p4rc.sdk.utils.JsonUtility;
 
 import java.util.HashMap;
 
-public class GameListTask extends CustomAsyncTask<Object, String, Boolean> {
+public class GameListTask extends CustomAsyncTask<Object, String, Response<GameList>> {
 
 	public GameListTask(Context mContext) {
 		super(mContext);
@@ -21,11 +21,16 @@ public class GameListTask extends CustomAsyncTask<Object, String, Boolean> {
 	private Response<GameList> responseData;
 
 	@Override
-	protected Boolean doInBackground(Object... args) {
+	protected Response<GameList> doInBackground(Object... args) {
 		responseData = protocol.requestGameList();
-		return responseData != null && responseData.getCode() == 200;
+		return responseData;
 	}
-	
+
+	@Override
+	protected void onPostExecute(Response<GameList> aBoolean) {
+		super.onPostExecute(aBoolean);
+	}
+
 	public Response<GameList> getData() {
 		return responseData;
 	}

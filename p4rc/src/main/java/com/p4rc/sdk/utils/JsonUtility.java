@@ -134,7 +134,7 @@ public class JsonUtility {
 			innerParams.put(PASSWORD_PARAM, password);
 			innerParams.put(DEVICE_TYPE_PARAM, deviceType);
 			innerParams.put(DOB, dob);
-			payload.put(PAYLOAD_PARAM, innerParams);
+			payload.put(USER_PARAM, innerParams);
 		} catch (JSONException e) {
 			lastErorCode = CONSTRUCTING_PARAMS_ERROR;
 		}
@@ -304,15 +304,10 @@ public class JsonUtility {
 		try {
 			JSONObject response = new JSONObject(responseString);
 
-			String status = response.getString(STATUS_PARAM);
-			JSONObject payload = response.getJSONObject(PAYLOAD_PARAM);
-			if (status.equals(SUCCESS_STATUS)) {
-				return new Response<>(200, "Success", GameList.fromJSON(payload));
-			} else {
-				return new Response<>(payload.optInt(CODE_PARAM), payload.optString(MESSAGE_PARAM), null);
-			}
+				return new Response<>(200, "Success", GameList.fromJSON(response));
 		} catch (JSONException e) {
 			lastErorCode = GETTING_PARAMS_ERROR;
+			Log.d(TAG, "encodeLoginResponse: " + e);
 			return new Response<>(888, "Response Not In Json", null);
 		}
 	}
@@ -334,12 +329,13 @@ public class JsonUtility {
 			}
 		} catch (JSONException e) {
 			lastErorCode = GETTING_PARAMS_ERROR;
+			Log.d(TAG, "encodeLoginResponse: " + e);
 			return new Response<>(888, "Response Not In Json", null);
 		}
 	}
 	
 	public HashMap<String, Object> encodeSignUpResponse(String responseString) {
-		HashMap<String, Object> data = new HashMap<String, Object>();
+		HashMap<String, Object> data = new HashMap<>();
 		if (responseString == null){
 			return data;
 		}

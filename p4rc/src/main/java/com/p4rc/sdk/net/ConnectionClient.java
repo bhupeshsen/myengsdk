@@ -1,5 +1,7 @@
 package com.p4rc.sdk.net;
 
+import android.util.Log;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -55,8 +57,10 @@ public class ConnectionClient {
 			URL url = new URL(uri);
 			HttpURLConnection con = (HttpURLConnection) url.openConnection();
 			con.setRequestMethod(method);
-			con.setDoOutput(true);
-			con.setDoInput(true);
+			if (!method.equals("GET")) {
+				con.setDoOutput(true);
+				con.setDoInput(true);
+			}
 			con.setChunkedStreamingMode(0);
 
 			if (headers != null) {
@@ -73,7 +77,9 @@ public class ConnectionClient {
 				writer.flush();
 			}
 
-			if(con.getResponseCode() == HttpURLConnection.HTTP_OK) {
+			Log.d(TAG, "makeRequestToServer: Executed");
+
+			if (con.getResponseCode() == HttpURLConnection.HTTP_OK) {
 				StringBuilder sb = new StringBuilder();
 				reader = new BufferedReader(new InputStreamReader(con.getInputStream()));
 				lastErrorCode = NetworkErrors.NO_ERROR;
@@ -86,20 +92,26 @@ public class ConnectionClient {
 
 				return sb.toString();
 			} else {
+				Log.d(TAG, "Error Code: " + con.getResponseCode() + " " + con.getResponseMessage());
 				lastErrorCode = NetworkErrors.CLIENT_PROTOCOL_EXCEPTION;
+				Log.d(TAG, "err1: " + lastErrorCode);
 				return null;
 			}
 
 		} catch (ProtocolException e) {
 			e.printStackTrace();
+			Log.d(TAG, "err2: " + e.getMessage());
 			lastErrorCode = NetworkErrors.CLIENT_PROTOCOL_EXCEPTION;
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
+			Log.d(TAG, "err3: " + e.getMessage());
 			lastErrorCode = NetworkErrors.MALFORMED_URL_EXCEPTION;
 		} catch (IOException e) {
 			e.printStackTrace();
+			Log.d(TAG, "err4: " + e.getMessage());
 			lastErrorCode = NetworkErrors.IO_EXCEPTION;
 		} finally {
+			Log.d(TAG, "err5: " + lastErrorCode);
 			if (reader != null) {
 				try {
 					reader.close();
@@ -108,7 +120,11 @@ public class ConnectionClient {
 					return null;
 				}
 			}
+			Log.d(TAG, "err6: " + lastErrorCode);
+
 		}
+		Log.d(TAG, "err7: " + lastErrorCode);
+
 		return null;
 	}
 }

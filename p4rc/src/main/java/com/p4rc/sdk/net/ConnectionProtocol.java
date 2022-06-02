@@ -1,5 +1,7 @@
 package com.p4rc.sdk.net;
 
+import android.util.Log;
+
 import com.p4rc.sdk.AppConfig;
 import com.p4rc.sdk.P4RC;
 import com.p4rc.sdk.model.AuthSession;
@@ -30,6 +32,7 @@ public class ConnectionProtocol extends ConnectionClient {
 
     private static final String POST_METHOD = "POST";
     private static final String PUT_METHOD = "PUT";
+    private static final String GET_METHOD = "GET";
 
     public static final String AUTH_TYPE_REGULAR = "REGULAR";
     public static final String AUTH_TYPE_FACEBOOK = "FACEBOOK";
@@ -89,7 +92,8 @@ public class ConnectionProtocol extends ConnectionClient {
             String firstName, String lastName,String email, String password, String deviceType,  String dob) {
         String url = completeURL(BASE_URL, SIGN_UP_NEW_REQUEST_METHOD);
         String json = jsonUtility.getSignUpNewParams(firstName, lastName, email, password, deviceType, dob);
-        return jsonUtility.encodeLoginResponse(super.makeRequestToServer(url, PUT_METHOD, json));
+        Log.d(TAG, "requestSignUpNew: " + json);
+        return jsonUtility.encodeLoginResponse(super.makeRequestToServer(url, POST_METHOD, json));
     }
 
     public Response<GameList> requestGameList() {
@@ -97,7 +101,9 @@ public class ConnectionProtocol extends ConnectionClient {
 //        fixme myxr-api-key is manually added
         Map<String,String> json = new HashMap<>();
         json.put("X-MYXR-ApiKey", "f3ba3335-c475-4c93-870d-cc33e423dd31");
-        return jsonUtility.encodeGameListResponse(super.makeRequestToServer(url, PUT_METHOD, null, json));
+        String response = super.makeRequestToServer(url, GET_METHOD, null, json);
+//        Log.d(TAG, "requestGameList: " + response);
+        return jsonUtility.encodeGameListResponse(response);
     }
 
     public HashMap<String, Object> requestPasswordReset(String email) {
