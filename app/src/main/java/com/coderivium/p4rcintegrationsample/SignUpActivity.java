@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.textfield.TextInputLayout;
 import com.p4rc.sdk.OnLoginWithEmailCallback;
+import com.p4rc.sdk.OnSignupWithEmailCallback;
 import com.p4rc.sdk.P4RC;
 
 import java.util.Objects;
@@ -44,7 +45,7 @@ public class SignUpActivity extends AppCompatActivity {
             String password = Objects.requireNonNull(passwordTextInputLayout.getEditText()).getText().toString();
             String dob = Objects.requireNonNull(dobTextInput.getEditText()).getText().toString();
 
-            P4RC.getInstance().userSignup(firstName, lastName,email, password, "Android", dob, new OnLoginWithEmailCallback() {
+            P4RC.getInstance().userSignup(firstName, lastName,email, password, "Android", dob, new OnSignupWithEmailCallback() {
                 @Override
                 public void onCompleted(String error) {
                     progressDialog.dismiss();
@@ -59,15 +60,25 @@ public class SignUpActivity extends AppCompatActivity {
                 }
 
                 @Override
-                public void onValidationError(String emailError, String passwordError) {
+                public void onValidationError(String firstNameError, String lastNameError, String emailError, String passwordError, String dobError) {
                     progressDialog.dismiss();
+                    if (firstNameError != null) {
+                        firstNameTextInput.setError(firstNameError);
+                    }
+                    if (lastNameError != null) {
+                        lastNameTextInput.setError(lastNameError);
+                    }
                     if (emailError != null) {
                         emailTextInputLayout.setError(emailError);
                     }
                     if (passwordError != null) {
                         passwordTextInputLayout.setError(passwordError);
                     }
+                    if (dobError != null) {
+                        dobTextInput.setError(dobError);
+                    }
                 }
+
             });
         });
 

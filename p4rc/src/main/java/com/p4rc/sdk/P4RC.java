@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.text.TextUtils;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.p4rc.sdk.activity.MainActivity;
 import com.p4rc.sdk.model.GamePoint;
@@ -348,10 +349,59 @@ public class P4RC {
         }
     }
 
+    public void loadGameList(OnGameListCallback onGameListCallback){
+        GameListTask gameListTask = new GameListTask(context);
+        gameListTask.setAsyncTaskListener(new CustomAsyncTask.AsyncTaskListener() {
+            @Override
+            public void onBeforeTaskStarted(CustomAsyncTask<?, ?, ?> task) {
+
+            }
+
+            @Override
+            public void onTaskFinished(CustomAsyncTask<?, ?, ?> task) {
+                if (gameListTask.getData() != null) {
+                    if (gameListTask.getData().getData() != null) {
+                        onGameListCallback.onSuccess(gameListTask.getData().getData());
+                    } else {
+                        onGameListCallback.onError(gameListTask.getErrorCode(), gameListTask.getErrorMessage());
+                    }
+                } else {
+                    onGameListCallback.onError(888, "No Response");
+
+                }
+            }
+        });
+        gameListTask.execute();
+
+    }
 
     public void userSignup(
-            String firstName, String lastName,String email, String password, String deviceType,  String dob, final OnLoginWithEmailCallback callback) {
+            String firstName, String lastName, String email, String password, String deviceType, String dob, final OnSignupWithEmailCallback callback) {
 
+        String firstNameError = null;
+        String lastNameError = null;
+        String emailError = null;
+        String passwordError = null;
+        String dobError = null;
+        if (firstName == null || firstName.length() == 0) {
+            firstNameError = "First Name is required";
+        }
+        if (lastName == null || lastName.length() == 0) {
+            lastNameError = "Last Name is required";
+        }
+        if (email == null || email.length() == 0) {
+            emailError = "Email is required";
+        }
+        if (password == null || password.length() == 0) {
+            passwordError = "Password is required";
+        }
+        if (dob == null || dob.length() == 0) {
+            dobError = "Date of Birth required";
+        }
+        if (emailError != null || passwordError != null) {
+            callback.onValidationError(firstNameError, lastNameError, emailError, passwordError, dobError);
+            return;
+        }
 //        todo validation and new Callback with all Validation
         SignUpNewTask signUpNewTask = new SignUpNewTask(context);
         signUpNewTask.setShowProgress(false);
