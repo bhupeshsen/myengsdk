@@ -62,6 +62,7 @@ public class DashboardActivity extends AppCompatActivity {
             public void onSuccess(GameList gameList) {
                 Log.d("TAG", "onSuccess: " + gameList.toString());
                 if (gameList != null) {
+                    list.clear();
                     list.addAll(gameList.getGames());
                     adapter.notifyDataSetChanged();
                 }
