@@ -8,6 +8,9 @@ import com.p4rc.sdk.model.AuthSession;
 import com.p4rc.sdk.model.gamelist.GameList;
 import com.p4rc.sdk.utils.JsonUtility;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -99,9 +102,15 @@ public class ConnectionProtocol extends ConnectionClient {
     public Response<GameList> requestGameList() {
         String url = completeURL(BASE_URL, GAME_LIST_REQUEST_METHOD);
 //        fixme myxr-api-key is manually added
-        Map<String,String> json = new HashMap<>();
-        json.put("X-MYXR-ApiKey", "f3ba3335-c475-4c93-870d-cc33e423dd31");
-        String response = super.makeRequestToServer(url, GET_METHOD, null, json);
+        Map<String,String> headers = new HashMap<>();
+        headers.put("X-MYXR-ApiKey", "f3ba3335-c475-4c93-870d-cc33e423dd31");
+        JSONObject params = new JSONObject();
+        try {
+            params.put("campaignType", 0);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        String response = super.makeRequestToServer(url, GET_METHOD, params.toString(), headers);
 //        Log.d(TAG, "requestGameList: " + response);
         return jsonUtility.encodeGameListResponse(response);
     }

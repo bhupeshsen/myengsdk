@@ -60,8 +60,8 @@ public class DashboardActivity extends AppCompatActivity {
             @SuppressLint("NotifyDataSetChanged")
             @Override
             public void onSuccess(GameList gameList) {
-                Log.d("TAG", "onSuccess: " + gameList.toString());
                 if (gameList != null) {
+                    Log.d("TAG", "onSuccess: " + gameList.toString());
                     list.clear();
                     list.addAll(gameList.getGames());
                     adapter.notifyDataSetChanged();
