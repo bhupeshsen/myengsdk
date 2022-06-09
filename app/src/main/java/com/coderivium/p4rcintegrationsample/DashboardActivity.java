@@ -2,6 +2,7 @@ package com.coderivium.p4rcintegrationsample;
 
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.TextView;
@@ -39,17 +40,21 @@ public class DashboardActivity extends AppCompatActivity {
         setUserData(P4RC.getInstance().getUser());
 
         setButtonCallbacks();
-//        userTextView = findViewById(R.id.userText);
         list = new ArrayList<>();
-        adapter = new GameListAdapter(this, list);
+        adapter = new GameListAdapter(this, list, new GameListAdapter.OnGameSelectListener() {
+            @Override
+            public void onGameSelected(Game game) {
+                Intent intent = new Intent(DashboardActivity.this, GameActivity.class);
+                intent.putExtra("game", game);
+                startActivity(intent);
+            }
+        });
 
         RecyclerView recyclerView = findViewById(R.id.gameListRecyclerView);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-
         loadGameList();
-//        userTextView.setText(P4RC.getInstance().getUser().toString());
 
     }
 

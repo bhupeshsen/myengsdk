@@ -1,5 +1,6 @@
 package com.p4rc.sdk.net;
 
+import android.net.Uri;
 import android.util.Log;
 
 import com.p4rc.sdk.AppConfig;
@@ -8,18 +9,13 @@ import com.p4rc.sdk.model.AuthSession;
 import com.p4rc.sdk.model.gamelist.GameList;
 import com.p4rc.sdk.utils.JsonUtility;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.util.HashMap;
 import java.util.Map;
 
 public class ConnectionProtocol extends ConnectionClient {
 
     private static final String GAME_LIST_REQUEST_METHOD = "v1/games?deviceName=null";
-    /**
-     * parameters for every request to the server
-     */
+
     private String BASE_URL = "";
     private static final String SIGN_UP_REQUEST_METHOD = "v1/user/registerNewUser";
     private static final String SIGN_UP_NEW_REQUEST_METHOD = "v1/users/registerNewUserNLogin";
@@ -100,18 +96,16 @@ public class ConnectionProtocol extends ConnectionClient {
     }
 
     public Response<GameList> requestGameList() {
-        String url = completeURL(BASE_URL, GAME_LIST_REQUEST_METHOD);
+        Uri uri = Uri.parse(completeURL(BASE_URL, GAME_LIST_REQUEST_METHOD));
+        uri.buildUpon()
+                .appendQueryParameter("campaignType", "0")
+                .build();
+
 //        fixme myxr-api-key is manually added
-        Map<String,String> headers = new HashMap<>();
+        Map<String, String> headers = new HashMap<>();
         headers.put("X-MYXR-ApiKey", "f3ba3335-c475-4c93-870d-cc33e423dd31");
-        JSONObject params = new JSONObject();
-        try {
-            params.put("campaignType", 0);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        String response = super.makeRequestToServer(url, GET_METHOD, params.toString(), headers);
-//        Log.d(TAG, "requestGameList: " + response);
+
+        String response = super.makeRequestToServer(uri.toString(), GET_METHOD, null, headers);
         return jsonUtility.encodeGameListResponse(response);
     }
 

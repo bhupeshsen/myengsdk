@@ -18,10 +18,12 @@ public class GameListAdapter extends RecyclerView.Adapter<GameListAdapter.ItemVi
 
     private final Context context;
     private final List<Game> list;
+    private final OnGameSelectListener onGameSelectListener;
 
-    public GameListAdapter(Context context, List<Game> list) {
+    public GameListAdapter(Context context, List<Game> list, OnGameSelectListener onGameSelectListener) {
         this.context = context;
         this.list = list;
+        this.onGameSelectListener = onGameSelectListener;
     }
 
     @NonNull
@@ -35,6 +37,7 @@ public class GameListAdapter extends RecyclerView.Adapter<GameListAdapter.ItemVi
     public void onBindViewHolder(@NonNull ItemViewHolder holder, int position) {
         Game game = list.get(position);
         holder.gameTitle.setText(game.getName());
+        holder.itemView.setOnClickListener(view -> onGameSelectListener.onGameSelected(game));
     }
 
     @Override
@@ -49,5 +52,9 @@ public class GameListAdapter extends RecyclerView.Adapter<GameListAdapter.ItemVi
         }
 
         TextView gameTitle = itemView.findViewById(R.id.gameTitle);
+    }
+
+    public interface OnGameSelectListener {
+        void onGameSelected(Game game);
     }
 }
