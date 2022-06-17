@@ -24,7 +24,7 @@ public class AuthSession {
 
     public static AuthSession fromJSON(JSONObject json) {
         AuthSession authSession = new AuthSession();
-        authSession.setSessionToken(json.optString("session_token"));
+        authSession.setSessionToken(json.optString("sessionToken"));
         authSession.setUser(User.fromJSON(json.optJSONObject("user")));
         return authSession;
     }

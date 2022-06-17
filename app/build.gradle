@@ -15,7 +15,7 @@ android {
         dev {
             dimension "environment"
             buildConfigField "String", "GAME_REFERENCE", '"newtest_30june"'
-            buildConfigField "String", "API_KEY", '"f3ba3335-c475-4c93-870d-cc33e423dd31"'
+            buildConfigField "String", "API_KEY", '"b7e10e8c-648a-4f95-88ea-85875da21d6f"'
         }
         qa {
             dimension "environment"

@@ -4,6 +4,8 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.InputType;
 import android.view.View;
@@ -13,8 +15,12 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.p4rc.sdk.OnGamePointsCallback;
+import com.p4rc.sdk.OnLoginWithEmailCallback;
+import com.p4rc.sdk.OnPointsIncrementCallback;
 import com.p4rc.sdk.P4RC;
 import com.p4rc.sdk.model.gamelist.Game;
+import com.p4rc.sdk.model.gamelist.GamePoints;
 
 public class GameActivity extends AppCompatActivity {
 
@@ -54,14 +60,33 @@ public class GameActivity extends AppCompatActivity {
 
     public void stopGame() {
         if (P4RC.getInstance().isLevelStarted()) {
-            startLevelFinishDialog().show();
+            P4RC.getInstance().stopGame(game.getGameRefId(), new OnPointsIncrementCallback() {
+                @Override
+                public void onCompleted(String error) {
+                    if (error != null) {
+                        Toast.makeText(GameActivity.this, "Successfully updated", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(GameActivity.this, "Something Wrong", Toast.LENGTH_SHORT).show();
+                    }
+                }
+
+                @Override
+                public void onValidationError(String error) {
+                    Toast.makeText(GameActivity.this, "Something Wrong", Toast.LENGTH_SHORT).show();
+
+
+                }
+            });
+           // startLevelFinishDialog().show();
         } else {
             Toast.makeText(this, getResources().getString(R.string.toast_press_start_level),
                     Toast.LENGTH_SHORT).show();
         }
     }
 
+
     public void startGame() {
+        P4RC.getInstance().startLevelWithPoints(1, 100);
         P4RC.getInstance().didStartLevel();
         startBtn.setEnabled(false);
         stopBtn.setEnabled(true);

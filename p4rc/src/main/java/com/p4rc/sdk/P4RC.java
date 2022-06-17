@@ -16,10 +16,12 @@ import com.p4rc.sdk.model.User;
 import com.p4rc.sdk.net.NetworkErrors;
 import com.p4rc.sdk.task.BatchCheckinPointsTask;
 import com.p4rc.sdk.task.CheckinPointsTask;
+import com.p4rc.sdk.task.CheckinPointsTaskByGameId;
 import com.p4rc.sdk.task.ConvertPointsTask;
 import com.p4rc.sdk.task.CustomAsyncTask;
 import com.p4rc.sdk.task.CustomAsyncTask.AsyncTaskListener;
 import com.p4rc.sdk.task.GameListTask;
+import com.p4rc.sdk.task.GamePointsTask;
 import com.p4rc.sdk.task.LoginTask;
 import com.p4rc.sdk.task.MaxPointsTask;
 import com.p4rc.sdk.task.PlayerPingTask;
@@ -257,6 +259,21 @@ public class P4RC {
      * @param level           last finished level value
      * @param levelGamePoints game points earned by the user per last game level
      */
+    public void startLevelWithPoints(int level, int levelGamePoints) {
+            GamePoint levelPoint;
+            pointsManager.setLastGamePoints(levelGamePoints);
+            pointsManager.setTotalGamePoints(pointsManager.getTotalGamePoints()
+                    + levelGamePoints);
+            pointsManager.setLastLevelValue(level);
+            long lastLevelEndTime = AppUtils.getTimeInGMT();
+            levelPoint = new GamePoint(pointsManager.getLastLevelStartTime(),
+                    lastLevelEndTime, level, GamePoint.calculatePlayedTime(pointsManager.
+                    getLastLevelStartTime(), lastLevelEndTime), levelGamePoints,
+                    AppUtils.getTimeInGMT());
+            pointsManager.addGamePoint(levelPoint);
+            pointsManager.saveGamePoints();
+    }
+
     public void didCompleteLevelWithPoints(int level, int levelGamePoints) {
         if (isLevelStarted) {
             GamePoint levelPoint;
@@ -372,6 +389,31 @@ public class P4RC {
             }
         });
         gameListTask.execute();
+
+    }
+    public void getUserPoints(String sessionId,OnGamePointsCallback onGameListCallback){
+        GamePointsTask gamePoints = new GamePointsTask(context);
+        gamePoints.setAsyncTaskListener(new CustomAsyncTask.AsyncTaskListener() {
+            @Override
+            public void onBeforeTaskStarted(CustomAsyncTask<?, ?, ?> task) {
+
+            }
+
+            @Override
+            public void onTaskFinished(CustomAsyncTask<?, ?, ?> task) {
+                if (gamePoints.getData() != null) {
+                    if (gamePoints.getData().getData() != null) {
+                        onGameListCallback.onSuccess(gamePoints.getData().getData());
+                    } else {
+                        onGameListCallback.onError(gamePoints.getErrorCode(), gamePoints.getErrorMessage());
+                    }
+                } else {
+                    onGameListCallback.onError(888, "No Response");
+
+                }
+            }
+        });
+        gamePoints.execute(sessionId);
 
     }
 
@@ -602,6 +644,35 @@ public class P4RC {
         return appConfig.getUser();
     }
 
+
+    public void   stopGame(String gameRefId,final OnPointsIncrementCallback callback){
+         if (isLoggedIn()) {
+            CheckinPointsTaskByGameId checkIn = new CheckinPointsTaskByGameId(context, false);
+            Log.e("gamereferId",gameRefId);
+             checkIn.setAsyncTaskListener(new CustomAsyncTask.AsyncTaskListener() {
+                 @Override
+                 public void onBeforeTaskStarted(CustomAsyncTask<?, ?, ?> task) {
+
+                 }
+
+                 @Override
+                 public void onTaskFinished(CustomAsyncTask<?, ?, ?> task) {
+                     Log.e("getResult",task.getResult().toString());
+                     if ((Boolean) task.getResult()) {
+                         if (callback != null) {
+                             callback.onCompleted("Success");
+                         }
+                     } else {
+                         if (callback != null) {
+                             callback.onCompleted("Failed");
+                         }
+                     }
+                 }
+             });
+
+             checkIn.execute(pointsManager.getLastLevelValue(), pointsManager.getLastGamePoints(),gameRefId,pointsManager.getLastLevelStartTime());
+        }
+    }
     private class ServerConvertionListener implements CustomAsyncTask.AsyncTaskListener {
 
         @Override

@@ -7,6 +7,7 @@ import com.p4rc.sdk.AppConfig;
 import com.p4rc.sdk.P4RC;
 import com.p4rc.sdk.model.AuthSession;
 import com.p4rc.sdk.model.gamelist.GameList;
+import com.p4rc.sdk.model.gamelist.GamePoints;
 import com.p4rc.sdk.utils.JsonUtility;
 
 import java.util.HashMap;
@@ -14,7 +15,9 @@ import java.util.Map;
 
 public class ConnectionProtocol extends ConnectionClient {
 
-    private static final String GAME_LIST_REQUEST_METHOD = "v1/games?deviceName=null";
+    private static final String GAME_LIST_REQUEST_METHOD = "v1/games?deviceName=null&campaignType=0";
+
+    private static final String GAME_POINTS = "v1/account/points";
 
     private String BASE_URL = "";
     private static final String SIGN_UP_REQUEST_METHOD = "v1/user/registerNewUser";
@@ -36,8 +39,8 @@ public class ConnectionProtocol extends ConnectionClient {
     public static final String AUTH_TYPE_REGULAR = "REGULAR";
     public static final String AUTH_TYPE_FACEBOOK = "FACEBOOK";
 
+    public static final String API_KEY_P4RC = "p4rcSessionId";
     public static final String API_KEY_PARAM = "X-MYXR-ApiKey";
-
     public static final String DEVICE_TYPE_MOBILE = "mobile";
     public static final String DEVICE_TYPE_SDK = "sdk";
 
@@ -75,6 +78,7 @@ public class ConnectionProtocol extends ConnectionClient {
 
     public Response<AuthSession> requestLogin(String password, String email) {
         String url = completeURL(BASE_URL, LOGIN_REQUEST_METHOD);
+
         String json = jsonUtility.getSignInRequestParams(password, email);
         return jsonUtility.encodeLoginResponse(super.makeRequestToServer(url, POST_METHOD, json));
     }
@@ -96,15 +100,15 @@ public class ConnectionProtocol extends ConnectionClient {
     }
 
     public Response<GameList> requestGameList() {
+        Log.e("requestGameList",BASE_URL);
         Uri uri = Uri.parse(completeURL(BASE_URL, GAME_LIST_REQUEST_METHOD));
-        uri.buildUpon()
-                .appendQueryParameter("campaignType", "0")
-                .build();
+//        uri.buildUpon()
+//                .appendQueryParameter("campaignType", "0")
+//                .build();
 
 //        fixme myxr-api-key is manually added
         Map<String, String> headers = new HashMap<>();
-        headers.put("X-MYXR-ApiKey", "f3ba3335-c475-4c93-870d-cc33e423dd31");
-
+        headers.put(API_KEY_PARAM, P4RC.getInstance().getApiKey());
         String response = super.makeRequestToServer(uri.toString(), GET_METHOD, null, headers);
         return jsonUtility.encodeGameListResponse(response);
     }
@@ -142,6 +146,17 @@ public class ConnectionProtocol extends ConnectionClient {
         return jsonUtility.encodeCheckinPoints(super.makeRequestToServer(url, PUT_METHOD, params, headers));
     }
 
+    public HashMap<String, Object> requestCheckInPointsByGameId(int level, int levelPoints,String gameReferId,long startTime) {
+        String url = completeURL(BASE_URL, CHECKIN_POINTS_METHOD);
+
+        Log.e("gamePointUrl",BASE_URL);
+        Map<String, String> headers = new HashMap<>();
+        headers.put(API_KEY_PARAM, P4RC.getInstance().getApiKey());
+        headers.put(API_KEY_P4RC, AppConfig.
+                getInstance().getUTFSessionId());
+        String params = jsonUtility.getCheckInPointsParamsByGameId(level,gameReferId,startTime);
+        return jsonUtility.encodeCheckinPoints(super.makeRequestToServer(url, POST_METHOD, params, headers));
+    }
     public HashMap<String, Object> requestPointsTable() {
         String url = completeURL(BASE_URL, POINTS_TABLE_METHOD);
         String params = jsonUtility.getPointsTableParams();
@@ -182,4 +197,16 @@ public class ConnectionProtocol extends ConnectionClient {
         String params = jsonUtility.getUserInfoParams();
         return jsonUtility.encodeUserInfo(super.makeRequestToServer(url, POST_METHOD, params));
     }
+
+    public Response<GamePoints> getPoints(String p4rcSessionId) {
+        Uri uri = Uri.parse(completeURL(BASE_URL, GAME_POINTS));
+//        fixme myxr-api-key is manually added
+        Map<String, String> headers = new HashMap<>();
+        headers.put(API_KEY_PARAM, P4RC.getInstance().getApiKey());
+        headers.put(API_KEY_P4RC,AppConfig.
+                getInstance().getUTFSessionId());
+        String response = super.makeRequestToServer(uri.toString(), GET_METHOD, null, headers);
+        return jsonUtility.encodeGamePoints(response);
+     }
+
 }

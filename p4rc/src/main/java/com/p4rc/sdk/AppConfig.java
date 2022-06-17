@@ -5,9 +5,12 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
+import android.util.Log;
 
 import com.p4rc.sdk.utils.JsonUtility;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.Arrays;
 import java.util.List;
 
@@ -87,6 +90,24 @@ public class AppConfig extends AppPreference {
         String sessionId = prefs.getString(JsonUtility.SESSION_TOKEN_PARAM, null);
 		return sessionId;
 	}
+
+	public String getUTFSessionId() {
+		final SharedPreferences prefs = context.getSharedPreferences(
+				PREFERENCE, Context.MODE_PRIVATE);
+		String sessionId = prefs.getString(JsonUtility.SESSION_TOKEN_PARAM, null);
+
+
+		try {
+			sessionId = URLEncoder.encode(sessionId, "UTF-8");
+		} catch (
+				UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
+
+		return sessionId;
+	}
+
+
 
 	public void setSessionId(String sessionId) {
         final SharedPreferences prefs = context.getSharedPreferences(

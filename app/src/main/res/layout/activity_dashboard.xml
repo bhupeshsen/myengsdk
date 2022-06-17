@@ -68,7 +68,7 @@
 
     <TextView
         android:id="@+id/p4rcPoints"
-        android:text="P4RC Points: 0"
+        android:text="MYXR Points: 0"
         android:textSize="20sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/userNameTextView"
@@ -83,6 +83,7 @@
         android:id="@+id/totalPoints"
         android:text="Total Points: 0"
         android:textSize="20sp"
+        android:visibility="gone"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/p4rcPoints"
         android:layout_marginTop="5dp"

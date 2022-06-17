@@ -17,7 +17,7 @@ public class PlayerPingTask extends CustomAsyncTask<Object, String, Boolean> {
 
 	@Override
 	protected Boolean doInBackground(Object... params) {
-		Log.e("bhupesh sen test","okkkkk work");
+
 		responseData = protocol.requestPlayerPing((Boolean)params[0]);
 		return responseData == null ? false : JsonUtility.SUCCESS_STATUS.
 				equals(responseData.get(JsonUtility.STATUS_PARAM));

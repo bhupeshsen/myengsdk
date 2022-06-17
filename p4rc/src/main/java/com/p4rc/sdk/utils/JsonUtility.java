@@ -9,6 +9,7 @@ import com.p4rc.sdk.model.GamePoint;
 import com.p4rc.sdk.model.Point;
 import com.p4rc.sdk.model.gamelist.Game;
 import com.p4rc.sdk.model.gamelist.GameList;
+import com.p4rc.sdk.model.gamelist.GamePoints;
 import com.p4rc.sdk.net.Response;
 
 import org.json.JSONArray;
@@ -165,16 +166,16 @@ public class JsonUtility {
 		}
 		return params.toString();
 	}
-	
-	public String getPlayerPingParams(boolean isLoggedIn) {
+
+	public String getPlayerPingParamsByGameId(boolean isLoggedIn) {
 		JSONObject params = new JSONObject();
 		try {
-			JSONObject payload = new JSONObject();			
+			JSONObject payload = new JSONObject();
 			payload.put(GAME_REF_ID, P4RC.getInstance().getGameRefId());
 			payload.put(INSTANCE_ID_PARAM, AppConfig.getInstance().getMacAddress());
 			payload.put(OPERATION_SYSTEM_PARAM, Constants.OPERATION_SYSTEM);
 			payload.put(SDK_VERSION_PARAM, Constants.SDK_VERSION);
-			
+
 			if(isLoggedIn) {
 				JSONObject securityObject = new JSONObject();
 				securityObject.put(SESSION_ID_PARAM, AppConfig.getInstance().getSessionId());
@@ -187,7 +188,51 @@ public class JsonUtility {
 		}
 		return params.toString();
 	}
-	
+	public String getPlayerPingParams(boolean isLoggedIn) {
+		JSONObject params = new JSONObject();
+		try {
+			JSONObject payload = new JSONObject();			
+			payload.put(GAME_REF_ID, P4RC.getInstance().getGameRefId());
+			payload.put(INSTANCE_ID_PARAM, AppConfig.getInstance().getMacAddress());
+			payload.put(OPERATION_SYSTEM_PARAM, Constants.OPERATION_SYSTEM);
+			payload.put(SDK_VERSION_PARAM, Constants.SDK_VERSION);
+			if(isLoggedIn) {
+				JSONObject securityObject = new JSONObject();
+				securityObject.put(SESSION_ID_PARAM, AppConfig.getInstance().getSessionId());
+				params.put(SECURITY_OBJECT_PARAM, securityObject);
+			}
+			params.put(PAYLOAD_PARAM, payload);
+		} catch (JSONException e) {
+			lastErorCode = CONSTRUCTING_PARAMS_ERROR;
+		}
+		return params.toString();
+	}
+
+	public String getCheckInPointsParamsByGameId(int level,String getGameRefId,long start) {
+		JSONObject params = new JSONObject();
+		JSONObject securityObject = new JSONObject();
+		JSONObject payload = new JSONObject();
+		try {
+			securityObject.put(SESSION_ID_PARAM, AppConfig.getInstance()
+					.getSessionId());
+			payload.put(START_TIME_PARAM, AppUtils.
+					getFormatedTimeString(PointsManager.getInstance(AppConfig.getInstance().getContext()).
+							getGamePoint(level).getStartTime()));
+			payload.put(END_TIME_PARAM, AppUtils.getFormatedTimeString(PointsManager.
+					getInstance(AppConfig.getInstance().getContext()).getGamePoint(level).getEndTime()));
+			payload.put(GAME_REF_ID,getGameRefId);
+			payload.put(GAME_POINTS_PARAM, "100");
+			payload.put(MINUTES_PLAYED_PARAM, "0");
+			payload.put(LEVEL_PARAM, "1");
+
+			params.put(SECURITY_OBJECT_PARAM, securityObject);
+			params.put(PAYLOAD_PARAM, payload);
+
+		} catch (JSONException e) {
+			lastErorCode = CONSTRUCTING_PARAMS_ERROR;
+		}
+		return params.toString();
+	}
 	public String getCheckInPointsParams(int level) {
 		JSONObject params = new JSONObject();
 		JSONObject securityObject = new JSONObject();
@@ -333,7 +378,28 @@ public class JsonUtility {
 			return new Response<>(888, "Response Not In Json", null);
 		}
 	}
-	
+
+	public Response<GamePoints> encodeGamePoints(String responseString) {
+		Log.d(TAG, "encodeLoginResponse: " + responseString);
+		if (responseString == null){
+			return new Response<>(lastErorCode, "No response from server", null);
+		}
+		try {
+			JSONObject response = new JSONObject(responseString);
+			String status = response.getString(STATUS_PARAM);
+			JSONObject payload = response.getJSONObject(PAYLOAD_PARAM);
+			if (status.equals(SUCCESS_STATUS)) {
+				return new Response<>(200, "Success", GamePoints.fromJSON(payload));
+			} else {
+				return new Response<>(payload.optInt(CODE_PARAM), payload.optString(MESSAGE_PARAM), null);
+			}
+		} catch (JSONException e) {
+			lastErorCode = GETTING_PARAMS_ERROR;
+			Log.d(TAG, "encodeLoginResponse: " + e);
+			return new Response<>(888, "Response Not In Json", null);
+		}
+	}
+
 	public HashMap<String, Object> encodeSignUpResponse(String responseString) {
 		HashMap<String, Object> data = new HashMap<>();
 		if (responseString == null){
