@@ -152,7 +152,11 @@ public class MainActivity extends AppCompatActivity {
             if (AppUtils.isOnline(getApplicationContext()))
                 p4rcwd.setEnabled(false);
             P4RC.getInstance().showMainP4RCPage();
-        } else if (v.getId() == R.id.btn_current_state) {
+        }
+        else if (v.getId() == R.id.webViewBtn) {
+            Intent intent = new Intent(this, WebMyXRSDK.class);
+            startActivity(intent);
+        }else if (v.getId() == R.id.btn_current_state) {
             P4RC.getInstance().showDescriptiveAlertView();
         } else if (v.getId() == R.id.btn_user_dashboard) {
             Intent intent = new Intent(this, DashboardActivity.class);

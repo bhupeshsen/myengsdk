@@ -103,7 +103,7 @@ public class DashboardActivity extends AppCompatActivity {
             public void onSuccess(GamePoints gamePoints) {
                 if (gamePoints != null) {
 
-                    p4rcPoints.setText("P4RC Points: " +String.valueOf(gamePoints.getCreditedPoints()));
+                    p4rcPoints.setText("MYXR Points: " +String.valueOf(gamePoints.getCreditedPoints()));
                 }
             }
             @Override

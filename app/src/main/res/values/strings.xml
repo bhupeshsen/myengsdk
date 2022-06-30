@@ -13,6 +13,7 @@
 
     <string name="toast_press_start_level">Please, press \"Start level\" first.</string>
 
+    <string name="button_open_web_view_sdk_level">Open  MyXR WEB SDK</string>
     <string name="text_view_splash">Splash</string>
     <string name="button_splash">Show splash screen</string>
     <string name="text_view_send_event">Send event</string>

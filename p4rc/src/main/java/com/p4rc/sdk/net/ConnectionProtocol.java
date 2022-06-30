@@ -78,7 +78,6 @@ public class ConnectionProtocol extends ConnectionClient {
 
     public Response<AuthSession> requestLogin(String password, String email) {
         String url = completeURL(BASE_URL, LOGIN_REQUEST_METHOD);
-
         String json = jsonUtility.getSignInRequestParams(password, email);
         return jsonUtility.encodeLoginResponse(super.makeRequestToServer(url, POST_METHOD, json));
     }
@@ -107,8 +106,11 @@ public class ConnectionProtocol extends ConnectionClient {
 //                .build();
 
 //        fixme myxr-api-key is manually added
+
+
         Map<String, String> headers = new HashMap<>();
         headers.put(API_KEY_PARAM, P4RC.getInstance().getApiKey());
+        Log.e("API_KEY_PARAM",P4RC.getInstance().getApiKey());
         String response = super.makeRequestToServer(uri.toString(), GET_METHOD, null, headers);
         return jsonUtility.encodeGameListResponse(response);
     }
@@ -203,6 +205,8 @@ public class ConnectionProtocol extends ConnectionClient {
 //        fixme myxr-api-key is manually added
         Map<String, String> headers = new HashMap<>();
         headers.put(API_KEY_PARAM, P4RC.getInstance().getApiKey());
+
+        Log.e("apiuser_key", P4RC.getInstance().getApiKey());
         headers.put(API_KEY_P4RC,AppConfig.
                 getInstance().getUTFSessionId());
         String response = super.makeRequestToServer(uri.toString(), GET_METHOD, null, headers);

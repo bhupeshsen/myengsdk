@@ -1,4 +1,5 @@
 apply plugin: 'com.android.application'
+apply plugin: 'org.jetbrains.kotlin.android'
 
 android {
     compileSdkVersion 29
@@ -15,12 +16,12 @@ android {
         dev {
             dimension "environment"
             buildConfigField "String", "GAME_REFERENCE", '"newtest_30june"'
-            buildConfigField "String", "API_KEY", '"b7e10e8c-648a-4f95-88ea-85875da21d6f"'
+            buildConfigField "String", "API_KEY", '"f3ba3335-c475-4c93-870d-cc33e423dd31"'
         }
         qa {
             dimension "environment"
             buildConfigField "String", "GAME_REFERENCE", '"CarRacing1"'
-            buildConfigField "String", "API_KEY", '"0dc6eeeb-545d-4f36-a1c9-3b22f3af95ec"'
+            buildConfigField "String", "API_KEY", '"20a71da1-5c42-47f9-9222-e84ef8e56c1b"'
         }
         stage {
             dimension "environment"

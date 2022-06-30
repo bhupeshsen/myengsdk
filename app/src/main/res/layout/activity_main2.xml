@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_gravity="center"
+    android:gravity="center"
+    tools:context=".MainActivity2">
+
+    <Button
+        android:layout_width="match_parent"
+        android:padding="10dp"
+        android:id="@+id/webViewBtn"
+        android:gravity="center"
+        android:text="MYXR SDK Android"
+        android:backgroundTint="#21c48b"
+        android:layout_margin="20dp"
+        android:textColor="#FFFFFF"
+        android:elevation="0dp"
+        android:textSize="20dp"
+        android:layout_height="90sp"/>
+
+</androidx.appcompat.widget.LinearLayoutCompat>
