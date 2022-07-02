@@ -27,6 +27,7 @@ class WebMyXRSDK : AppCompatActivity() {
     private lateinit var backClick: AppCompatImageView
     private lateinit var forwardClick: AppCompatImageView
     private lateinit var toolbar: Toolbar
+    private  var baseUrl:String = "https://myxr-web-stage.kiwi-internal.com/www.google.com"
     private lateinit var webUrl: String
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,7 +44,7 @@ class WebMyXRSDK : AppCompatActivity() {
         }
         setupWebView()
         createProgressDialog();
-        loadPaymentWebView("https://myxr-web-stage.kiwi-internal.com")
+        loadPaymentWebView(baseUrl)
 
         backClick.setOnClickListener {
             webView.goBack()
@@ -57,7 +58,7 @@ class WebMyXRSDK : AppCompatActivity() {
         }
 
         homeClick.setOnClickListener {
-            loadPaymentWebView("https://myxr-web-stage.kiwi-internal.com")
+            loadPaymentWebView(baseUrl)
         }
     }
     private fun createProgressDialog() {
