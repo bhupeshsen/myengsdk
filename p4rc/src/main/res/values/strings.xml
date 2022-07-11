@@ -2,69 +2,69 @@
 <resources>
 
     <string name="app_name">P4RC</string>
-    
+
     <!-- Resources for Login with P4RC screen -->
     <string name="p4rc_login_login_label">Log-in to P4RC</string>
     <string name="p4rc_login_mail_hint">e-mail</string>
     <string name="p4rc_login_passw_hint">Password</string>
-	<string name="p4rc_login_sign_button_text">Sign In</string>
-	<string name="button_user_login_auth">Authentication</string>
-	<string name="p4rc_login_dont_have_acc">Don\'t have a P4RC Account?</string>
-	<string name="p4rc_login_sign_up_easy_label">Signing up is easy.</string>
-	<string name="p4rc_login_sign_up_link">Sign Up.</string>
-	<string name="p4rc_login_forgot_pass">Forgot your user name or password?</string>
-	<string name="p4rc_login_reset_link">Reset it here</string>
-	
-	<!-- Resources for password reset screen-->
-	<string name="p4rc_pass_reset_header_text">Enter your e-mail address below and 
+    <string name="p4rc_login_sign_button_text">Sign In</string>
+    <string name="button_user_login_auth">Authentication</string>
+    <string name="p4rc_login_dont_have_acc">Don\'t have a P4RC Account?</string>
+    <string name="p4rc_login_sign_up_easy_label">Signing up is easy.</string>
+    <string name="p4rc_login_sign_up_link">Sign Up.</string>
+    <string name="p4rc_login_forgot_pass">Forgot your user name or password?</string>
+    <string name="p4rc_login_reset_link">Reset it here</string>
+
+    <!-- Resources for password reset screen-->
+    <string name="p4rc_pass_reset_header_text">Enter your e-mail address below and
 	    we\'ll send you instructions on how to reset your password.\nEmail Address</string>
-	<string name="p4rc_pass_reset_button_text">Submit</string>
-	
-	<!-- Resources for Sign up for P4RC -->
-	<string name="p4rc_signup_header_label">Sign Up For P4RC</string>
-	<string name="p4rc_signup_first_name_hint">First Name</string>
-	<string name="p4rc_signup_last_name_hint">Last Name</string>
-	<string name="p4rc_signup_email_hint">Email</string>
-	<string name="p4rc_signup_confirm_email_hint">Confirm Email</string>
-	<string name="p4rc_signup_passw_hint">Password</string>
-	<string name="p4rc_signup_confirm_pawws_hint">Verify Password</string>
-	<string name="p4rc_signup_date_of_birth_hint">Date of Birth</string>
-	<string name="p4rc_signup_term_of_use_p1">I have read and agree to the </string>
-	<string name="p4rc_signup_term_of_use_p2"> Terms Of Use.</string>
-	<string name="p4rc_signup_button_text">Sign Up</string>
+    <string name="p4rc_pass_reset_button_text">Submit</string>
+
+    <!-- Resources for Sign up for P4RC -->
+    <string name="p4rc_signup_header_label">Sign Up For P4RC</string>
+    <string name="p4rc_signup_first_name_hint">First Name</string>
+    <string name="p4rc_signup_last_name_hint">Last Name</string>
+    <string name="p4rc_signup_email_hint">Email</string>
+    <string name="p4rc_signup_confirm_email_hint">Confirm Email</string>
+    <string name="p4rc_signup_passw_hint">Password</string>
+    <string name="p4rc_signup_confirm_pawws_hint">Verify Password</string>
+    <string name="p4rc_signup_date_of_birth_hint">Date of Birth</string>
+    <string name="p4rc_signup_term_of_use_p1">I have read and agree to the </string>
+    <string name="p4rc_signup_term_of_use_p2"> Terms Of Use.</string>
+    <string name="p4rc_signup_button_text">Sign Up</string>
     <string name="p4rc_signup_hane_acc_p2">Already have an account?</string>
-	
-	<!-- Resources for alert dialogs -->
-	<string name="alert_dialog_title">Error Message</string>
-	<string name="login_short_password_error">Password is too short. It should be at least 6 characters long.</string>
-	<string name="login_email_not_inputed">Please enter email address.</string>
-	<string name="login_password_not_inputed">Please enter password.</string>
-	<string name="wrong_email_address">Please enter valid email address.</string>
-	
-	<string name="pass_reset_email_not_exists">Email Address does not exist in our system. 
+
+    <!-- Resources for alert dialogs -->
+    <string name="alert_dialog_title">Error Message</string>
+    <string name="login_short_password_error">Password is too short. It should be at least 6 characters long.</string>
+    <string name="login_email_not_inputed">Please enter email address.</string>
+    <string name="login_password_not_inputed">Please enter password.</string>
+    <string name="wrong_email_address">Please enter valid email address.</string>
+
+    <string name="pass_reset_email_not_exists">Email Address does not exist in our system.
 	    Please try with another email address.</string>
-	<string name="pass_reset_siccess">Password Reset e-mail has been sent to your registered email address. 
+    <string name="pass_reset_siccess">Password Reset e-mail has been sent to your registered email address.
 	    Please check your email account.</string>
-	
-	<string name="sign_up_firs_name_empty">Please enter First Name.</string>
-	<string name="sign_up_second_name_empty">Please enter Last Name.</string>
-	<string name="sign_up_email_empty">Please enter Email.</string>
-	<string name="sign_up_email_confirm_empty">Please enter Confirm email address.</string>
-	<string name="sign_up_password_empty">Please enter Password.</string>
-	<string name="sign_up_date_of_birth_empty">Please enter Date of Birth.</string>
-		<string name="sign_up_verif_password_empty">Please enter Verify password.</string>
-	<string name="sign_up_passwords_not_match">Passwords do not match.</string>
-	<string name="sign_up_password_to_short">Password is too short. It should be at least 6 characters long.</string>
-	<string name="sign_up_emails_not_match">Emails do not match.</string>
-	<string name="sign_up_terms_not_accepted">Please accept terms and conditions.</string>
-	<string name="sign_up_wrong_date_of_birth">Sorry, we are not able to process your registration.</string>
-			
-	<string name="positive_button_text">OK</string>
-	<string name="retry_button_text">Retry</string>
-	
-	<string name="waiting_for_facebook_authentication">Waiting for Facebook authentication...</string>
-	<string name="cancel">Cancel</string>
-	<string name="earn_rewards_while_you_play_">Earn Rewards While You Play?</string>
-	<string name="x">X</string>
+
+    <string name="sign_up_firs_name_empty">Please enter First Name.</string>
+    <string name="sign_up_second_name_empty">Please enter Last Name.</string>
+    <string name="sign_up_email_empty">Please enter Email.</string>
+    <string name="sign_up_email_confirm_empty">Please enter Confirm email address.</string>
+    <string name="sign_up_password_empty">Please enter Password.</string>
+    <string name="sign_up_date_of_birth_empty">Please enter Date of Birth.</string>
+    <string name="sign_up_verif_password_empty">Please enter Verify password.</string>
+    <string name="sign_up_passwords_not_match">Passwords do not match.</string>
+    <string name="sign_up_password_to_short">Password is too short. It should be at least 6 characters long.</string>
+    <string name="sign_up_emails_not_match">Emails do not match.</string>
+    <string name="sign_up_terms_not_accepted">Please accept terms and conditions.</string>
+    <string name="sign_up_wrong_date_of_birth">Sorry, we are not able to process your registration.</string>
+
+    <string name="positive_button_text">OK</string>
+    <string name="retry_button_text">Retry</string>
+
+    <string name="waiting_for_facebook_authentication">Waiting for Facebook authentication...</string>
+    <string name="cancel">Cancel</string>
+    <string name="earn_rewards_while_you_play_">Earn Rewards While You Play?</string>
+    <string name="x">X</string>
 
 </resources>

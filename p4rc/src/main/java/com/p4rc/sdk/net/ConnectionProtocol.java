@@ -6,6 +6,7 @@ import android.util.Log;
 import com.p4rc.sdk.AppConfig;
 import com.p4rc.sdk.P4RC;
 import com.p4rc.sdk.model.AuthSession;
+import com.p4rc.sdk.model.CompanyDetails;
 import com.p4rc.sdk.model.gamelist.GameList;
 import com.p4rc.sdk.model.gamelist.GamePoints;
 import com.p4rc.sdk.utils.JsonUtility;
@@ -18,6 +19,7 @@ public class ConnectionProtocol extends ConnectionClient {
     private static final String GAME_LIST_REQUEST_METHOD = "v1/games?deviceName=null&campaignType=0";
 
     private static final String GAME_POINTS = "v1/account/points";
+    private static final String COMPANY_DETAILS = "v2/user/company/basic-detail";
 
     private String BASE_URL = "";
     private static final String SIGN_UP_REQUEST_METHOD = "v1/user/registerNewUser";
@@ -212,5 +214,17 @@ public class ConnectionProtocol extends ConnectionClient {
         String response = super.makeRequestToServer(uri.toString(), GET_METHOD, null, headers);
         return jsonUtility.encodeGamePoints(response);
      }
+
+    public Response<CompanyDetails> getCompanyDetails() {
+        Uri uri = Uri.parse(completeURL(BASE_URL, COMPANY_DETAILS));
+//        fixme myxr-api-key is manually added
+        Map<String, String> headers = new HashMap<>();
+        headers.put(API_KEY_PARAM, P4RC.getInstance().getApiKey());
+
+        Log.e("apiuser_key", P4RC.getInstance().getApiKey());
+
+        String response = super.makeRequestToServer(uri.toString(), GET_METHOD, null, headers);
+        return jsonUtility.encodeCompanyDetails(response);
+    }
 
 }

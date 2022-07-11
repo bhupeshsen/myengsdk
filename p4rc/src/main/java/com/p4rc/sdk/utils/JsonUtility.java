@@ -5,6 +5,7 @@ import android.util.Log;
 import com.p4rc.sdk.AppConfig;
 import com.p4rc.sdk.P4RC;
 import com.p4rc.sdk.model.AuthSession;
+import com.p4rc.sdk.model.CompanyDetails;
 import com.p4rc.sdk.model.GamePoint;
 import com.p4rc.sdk.model.Point;
 import com.p4rc.sdk.model.gamelist.Game;
@@ -378,7 +379,6 @@ public class JsonUtility {
 			return new Response<>(888, "Response Not In Json", null);
 		}
 	}
-
 	public Response<GamePoints> encodeGamePoints(String responseString) {
 		Log.d(TAG, "encodeLoginResponse: " + responseString);
 		if (responseString == null){
@@ -390,6 +390,26 @@ public class JsonUtility {
 			JSONObject payload = response.getJSONObject(PAYLOAD_PARAM);
 			if (status.equals(SUCCESS_STATUS)) {
 				return new Response<>(200, "Success", GamePoints.fromJSON(payload));
+			} else {
+				return new Response<>(payload.optInt(CODE_PARAM), payload.optString(MESSAGE_PARAM), null);
+			}
+		} catch (JSONException e) {
+			lastErorCode = GETTING_PARAMS_ERROR;
+			Log.d(TAG, "encodeLoginResponse: " + e);
+			return new Response<>(888, "Response Not In Json", null);
+		}
+	}
+	public Response<CompanyDetails> encodeCompanyDetails(String responseString) {
+		Log.d(TAG, "encodeLoginResponse: " + responseString);
+		if (responseString == null){
+			return new Response<>(lastErorCode, "No response from server", null);
+		}
+		try {
+			JSONObject response = new JSONObject(responseString);
+			String status = response.getString(STATUS_PARAM);
+			JSONObject payload = response.getJSONObject(PAYLOAD_PARAM);
+			if (status.equals(SUCCESS_STATUS)) {
+				return new Response<>(200, "Success", CompanyDetails.fromJSON(payload));
 			} else {
 				return new Response<>(payload.optInt(CODE_PARAM), payload.optString(MESSAGE_PARAM), null);
 			}
@@ -695,4 +715,6 @@ public class JsonUtility {
 		}
 		return data;
 	}
+
+
 }

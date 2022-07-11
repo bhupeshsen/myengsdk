@@ -1,13 +1,14 @@
 apply plugin: 'com.android.application'
 apply plugin: 'org.jetbrains.kotlin.android'
+apply plugin: 'kotlin-android'
 
 android {
-    compileSdkVersion 29
+    compileSdkVersion 32
     buildToolsVersion "28.0.3"
     defaultConfig {
         applicationId "com.coderivium.p4rcintegrationsample"
         minSdkVersion 17
-        targetSdkVersion 29
+        targetSdkVersion 32
         versionCode 1
         versionName "1.0"
     }
@@ -58,4 +59,9 @@ dependencies {
     qaImplementation project(':p4rc')
     stageImplementation project(':p4rc')
     implementation 'com.facebook.android:facebook-android-sdk:4.11.0'
+    implementation "com.google.android.gms:play-services-location:18.0.0"
+    implementation 'io.github.ParkSangGwon:tedpermission-normal:3.3.0'
+
+
+
 }

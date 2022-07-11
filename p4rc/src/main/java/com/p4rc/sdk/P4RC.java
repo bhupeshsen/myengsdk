@@ -10,6 +10,8 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.p4rc.sdk.activity.MainActivity;
+
+import com.p4rc.sdk.activity.MyXRMainActivity;
 import com.p4rc.sdk.model.GamePoint;
 import com.p4rc.sdk.model.Point;
 import com.p4rc.sdk.model.User;
@@ -17,6 +19,7 @@ import com.p4rc.sdk.net.NetworkErrors;
 import com.p4rc.sdk.task.BatchCheckinPointsTask;
 import com.p4rc.sdk.task.CheckinPointsTask;
 import com.p4rc.sdk.task.CheckinPointsTaskByGameId;
+import com.p4rc.sdk.task.CompanyDetailsTask;
 import com.p4rc.sdk.task.ConvertPointsTask;
 import com.p4rc.sdk.task.CustomAsyncTask;
 import com.p4rc.sdk.task.CustomAsyncTask.AsyncTaskListener;
@@ -70,6 +73,14 @@ public class P4RC {
     private AlertDialog requestDialog;
 
     private P4RC() {
+
+    }
+
+    public void P4RCInitWeb(Context context,String baseUrl){
+
+        Intent intent = new Intent(context, MyXRMainActivity.class);
+        intent.putExtra("baseurl",baseUrl);
+        context.startActivity(intent);
 
     }
 
@@ -391,6 +402,30 @@ public class P4RC {
         gameListTask.execute();
 
     }
+    public void getCompanyDetails(OnCompanyDetailsCallback onCompanyDetailsCallback){
+        CompanyDetailsTask companyDetailsTask = new CompanyDetailsTask(context);
+        companyDetailsTask.setAsyncTaskListener(new CustomAsyncTask.AsyncTaskListener() {
+            @Override
+            public void onBeforeTaskStarted(CustomAsyncTask<?, ?, ?> task) {
+
+            }
+
+            @Override
+            public void onTaskFinished(CustomAsyncTask<?, ?, ?> task) {
+                if (companyDetailsTask.getData() != null) {
+                    if (companyDetailsTask.getData().getData() != null) {
+                        onCompanyDetailsCallback.onSuccess(companyDetailsTask.getData().getData());
+                    } else {
+                        onCompanyDetailsCallback.onError(companyDetailsTask.getErrorCode(), companyDetailsTask.getErrorMessage());
+                    }
+                } else {
+                    onCompanyDetailsCallback.onError(888, "No Response");
+
+                }
+            }
+        });
+        companyDetailsTask.execute();
+    }
     public void getUserPoints(String sessionId,OnGamePointsCallback onGameListCallback){
         GamePointsTask gamePoints = new GamePointsTask(context);
         gamePoints.setAsyncTaskListener(new CustomAsyncTask.AsyncTaskListener() {
@@ -643,6 +678,8 @@ public class P4RC {
     public User getUser() {
         return appConfig.getUser();
     }
+
+
 
 
     public void   stopGame(String gameRefId,final OnPointsIncrementCallback callback){

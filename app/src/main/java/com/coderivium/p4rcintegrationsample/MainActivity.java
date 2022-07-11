@@ -154,7 +154,7 @@ public class MainActivity extends AppCompatActivity {
             P4RC.getInstance().showMainP4RCPage();
         }
         else if (v.getId() == R.id.webViewBtn) {
-            Intent intent = new Intent(this, WebMyXRSDK.class);
+            Intent intent = new Intent(this, WebViewActivity.class);
             startActivity(intent);
         }else if (v.getId() == R.id.btn_current_state) {
             P4RC.getInstance().showDescriptiveAlertView();
